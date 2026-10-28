@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block title %}Dean Academics & Admin Portal - Apex Institute{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <!-- Admin Header Banner -->
+    <div class="admin-banner">
+        <div class="banner-content">
+            <span class="portal-badge">Academic Dean & Administration</span>
+            <h1 class="banner-title">Knowledge Base & Student Affairs Center</h1>
+            <p class="banner-sub">
+                Manage local RAG documents, inspect real-time attendance defaulters, 
+                and oversee department timetables for Apex Institute of Technology.
+            </p>
+        </div>
+        <div class="banner-actions">
+            <a href="{{ url_for('chat_dashboard') }}" class="btn-secondary" id="btn-switch-assistant">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Test Chatbot</span>
+            </a>
+            <button type="button" class="btn-primary" onclick="scrollToUpload()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Upload Document</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Metrics Overview Grid -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-icon bg-indigo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <div class="metric-data">
+                <span class="metric-val">{{ stats.total_students }}</span>
+                <span class="metric-lbl">Enrolled Students</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon bg-cyan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </div>
+            <div class="metric-data">
+                <span class="metric-val">{{ stats.total_documents }}</span>
+                <span class="metric-lbl">Knowledge Documents</span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-icon bg-emerald">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+            </div>
+            <div class="metric-data">
+                <span class="metric-val">{{ stats.total_chunks }}</span>
+                <span class="metric-lbl">Searchable BM25 Chunks</span>
+            </div>
+        </div>
+
+        <div class="metric-card {% if stats.defaulters_count > 0 %}alert-border{% endif %}">
+            <div class="metric-icon bg-rose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <div class="metric-data">
+                <span class="metric-val">{{ stats.defaulters_count }}</span>
+                <span class="metric-lbl">Attendance Defaulters (&lt;75%)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: RAG Document Ingestion & Knowledge Base -->
+    <div class="admin-section" id="upload-section">
+        <div class="section-header-row">
+            <div>
+                <h2 class="section-title">RAG Knowledge Base & Document Pipeline</h2>
+                <p class="section-desc">
+                    Upload official academic documents (.PDF, .DOCX, .TXT, .MD). 
+                    Files are instantly ingested, sanitized, segmented into overlapping chunks, and indexed into the local retrieval store.
+                </p>
+            </div>
+        </div>
+
+        <!-- Upload Form Box -->
+        <div class="upload-box-card">
+            <form action="{{ url_for('admin_upload_document') }}" method="POST" enctype="multipart/form-data" class="upload-dropzone" id="uploadForm">
+                <input type="file" name="document" id="fileInput" accept=".pdf,.docx,.txt,.md" required onchange="handleFileSelected(this)">
+                <div class="dropzone-content" id="dropzoneContent">
+                    <div class="dropzone-icon">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="dropzone-text">
+                        <strong>Drag and drop academic document here, or <span class="highlight-link">browse files</span></strong>
+                        <span>Supports PDF, DOCX, TXT, and Markdown files up to 16 MB</span>
+                    </div>
+                    <div class="file-name-preview" id="selectedFileName" style="display:none;"></div>
+                    <button type="submit" class="btn-primary" id="uploadSubmitBtn" style="display:none;">
+                        <span>Index Document Now</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Indexed Documents Table -->
+        <div class="card table-card">
+            <div class="table-card-head">
+                <h3 class="table-title">Currently Indexed Documents ({{ documents | length }})</h3>
+                <span class="table-hint">RAG BM25 Retrieval Engine Active</span>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Format</th>
+                            <th>File Size</th>
+                            <th>Indexed Chunks</th>
+                            <th>Upload Timestamp</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documents %}
+                        <tr>
+                            <td>
+                                <div class="doc-file-info">
+                                    <div class="file-type-icon type-{{ doc.file_type | lower }}">{{ doc.file_type }}</div>
+                                    <div>
+                                        <strong class="file-name-text">{{ doc.original_name }}</strong>
+                                        <div class="file-stored-as">Disk: {{ doc.filename }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge-pill">{{ doc.file_type }}</span></td>
+                            <td>{{ (doc.file_size / 1024) | round(1) }} KB</td>
+                            <td>
+                                <span class="chunk-count-badge">
+                                    <strong>{{ doc.chunk_count }}</strong> searchable chunks
+                                </span>
+                            </td>
+                            <td>{{ doc.upload_date }}</td>
+                            <td class="text-right">
+                                <form action="{{ url_for('admin_delete_document', doc_id=doc.id) }}" method="POST" onsubmit="return confirm('Delete document and all indexed chunks from RAG store?');">
+                                    <button type="submit" class="btn-icon danger" title="Delete document">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Student Attendance & Defaulters Intelligence -->
+    <div class="admin-section">
+        <div class="section-header-row">
+            <div>
+                <h2 class="section-title">Student Attendance & Defaulter Intelligence</h2>
+                <p class="section-desc">
+                    Mandatory minimum requirement is 75.0%. Students falling below this threshold are flagged for semester debarment review.
+                </p>
+            </div>
+        </div>
+
+        <div class="card table-card">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Program / Semester</th>
+                            <th>Overall Attendance</th>
+                            <th>Classes Attended</th>
+                            <th>Status & Deficiencies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in students %}
+                        <tr class="{% if s.is_low or s.low_subjects %}row-alert{% endif %}">
+                            <td><code>{{ s.student_id }}</code></td>
+                            <td><strong>{{ s.name }}</strong></td>
+                            <td>{{ s.class_name }} &bull; Sem {{ s.semester }}</td>
+                            <td>
+                                <div class="attendance-table-meter">
+                                    <span class="pct-num {% if s.overall_percentage < 75.0 %}text-danger{% else %}text-success{% endif %}">
+                                        {{ s.overall_percentage }}%
+                                    </span>
+                                    <div class="meter-bar-bg">
+                                        <div class="meter-bar-fill {% if s.overall_percentage < 75.0 %}fill-danger{% else %}fill-success{% endif %}" style="width: {{ s.overall_percentage }}%;"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ s.attended }} / {{ s.total }}</td>
+                            <td>
+                                {% if s.low_subjects %}
+                                    <div class="low-subjects-pills">
+                                        <span class="status-pill pill-danger">Defaulter Risk</span>
+                                        {% for ls in s.low_subjects %}
+                                            <span class="def-sub-chip" title="{{ ls.percentage }}% attended">
+                                                {{ ls.subject }}: <strong>{{ ls.percentage }}%</strong>
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="status-pill pill-success">Eligible for Exams</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function handleFileSelected(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const preview = document.getElementById('selectedFileName');
+        const submitBtn = document.getElementById('uploadSubmitBtn');
+        
+        preview.innerText = `Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        preview.style.display = 'block';
+        submitBtn.style.display = 'inline-flex';
+    }
+}
+
+function scrollToUpload() {
+    const el = document.getElementById('upload-section');
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+</script>
+{% endblock %}

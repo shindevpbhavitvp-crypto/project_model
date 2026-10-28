@@ -1,0 +1,38 @@
+================================================================================
+APEX INSTITUTE OF TECHNOLOGY - EXAMINATION RULES AND REGULATIONS
+Controller of Examinations (CoE) | Academic Policy Handbook
+================================================================================
+
+1. ELIGIBILITY FOR APPEARING IN EXAMINATIONS
+- Attendance Rule: A student must secure a minimum aggregate attendance of 75% in every individual subject (theory and lab separately) during the semester.
+- Medical Condonation: Up to a maximum 10% relaxation (i.e. 65% to 74% attendance) can be granted by the Academic Council solely on documented medical grounds with valid hospital certificates submitted within 7 days of illness.
+- De-barred Status: Students with attendance strictly below 75% without authorized condonation are designated as 'De-barred' and shall not receive an Examination Hall Ticket. They must re-register the course in the supplementary term.
+- Clearance Certificate: All tuition, lab breakage, and library dues must be cleared prior to hall ticket issuance.
+
+2. EXAMINATION HALL PROTOCOL AND REPORTING
+- Hall Ticket & Identity Card: Students must carry their physical Student Identity Card and stamped Examination Hall Ticket to every examination session. Digital copies on phones are not permitted.
+- Reporting Time: Candidates must occupy their allotted seats at least 20 minutes before the commencement of the exam.
+- Late Entry: No student will be admitted into the examination hall 30 minutes after the scheduled start time.
+- Leaving the Hall: Students are not permitted to exit the exam hall during the first 60 minutes or during the last 15 minutes of the examination.
+
+3. PROHIBITED ITEMS AND MALPRACTICE POLICY
+- Electronic Devices: Mobile phones, smartwatches, programmable calculators, fitness bands, Bluetooth devices, and digital notes are strictly prohibited inside the hall.
+- Possession of unauthorized chits, copying from peers, writing on hands/furniture, or exchanging stationery constitutes Malpractice (Unfair Means).
+- Penalties for Malpractice:
+  * Category 1 (Possession of unauthorized material): Cancellation of current paper and award of zero marks.
+  * Category 2 (Actual copying / assistance): Cancellation of all papers of the current examination session.
+  * Category 3 (Impersonation / assault / extreme misconduct): Immediate expulsion from the college for one academic year and formal police reporting.
+
+4. GRADING SYSTEM AND PASSING CRITERIA
+- 10-point Absolute Grading Scale:
+  * O (Outstanding): 90% - 100% (Grade Point 10)
+  * A+ (Excellent): 80% - 89% (Grade Point 9)
+  * A (Very Good): 70% - 79% (Grade Point 8)
+  * B+ (Good): 60% - 69% (Grade Point 7)
+  * B (Above Average): 55% - 59% (Grade Point 6)
+  * C (Average): 50% - 54% (Grade Point 5)
+  * P (Pass): 40% - 49% (Grade Point 4)
+  * F (Fail): Below 40% (Grade Point 0)
+- Passing Criterion: Minimum 40% marks required in End-Semester Examination and 40% combined in Internal Assessment + End-Semester.
+- SGPA & CGPA: Calculated as (Sum of Grade Points * Course Credits) / Total Credits.
+- Re-evaluation & Answer Script Inspection: Applications for photocopy of answer sheet and re-evaluation must be submitted online within 10 days of result publication with a fee of Rs. 500 per course.

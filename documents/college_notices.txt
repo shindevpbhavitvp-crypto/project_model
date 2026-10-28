@@ -1,0 +1,37 @@
+================================================================================
+APEX INSTITUTE OF TECHNOLOGY - CAMPUS NOTICES & CIRCULARS (2025-2026)
+Office of Campus Administration & Student Affairs
+================================================================================
+
+NOTICE 1: CENTRAL LIBRARY TIMINGS & BORROWING POLICIES
+- Regular Working Hours: Monday to Saturday, 08:00 AM to 09:00 PM.
+- Exam Period Extended Hours: 08:00 AM to 11:30 PM (including Sundays).
+- Book Borrowing Limits:
+  * Undergraduate Students: Maximum 4 books for 14 days.
+  * Postgraduate Students: Maximum 6 books for 21 days.
+- Overdue Fine: Rs. 5 per day per book for the first 7 overdue days; Rs. 10 per day thereafter.
+- Digital Library & E-Journals: IEEE Xplore, ScienceDirect, and ACM Digital Library accessible through college intranet and OpenAthens remote proxy.
+- Strict Silence: Mobile phones must be switched to silent mode. Group study rooms must be reserved via the library portal.
+
+NOTICE 2: CAMPUS PLACEMENT & INTERNSHIP DRIVE (CLASS OF 2026)
+- Training & Placement Cell (T&P) Notice: Ref: TPC/2026/CR-089
+- Mandatory Registration: All 6th-semester and 7th-semester students must complete their profile verification on the T&P Portal by February 20, 2026.
+- Eligibility Criteria: Minimum CGPA of 6.75 with zero active backlogs to register for Tier-1 recruitment drives (TCS Ninja/Digital, Infosys, Cognizant, Wipro, Capgemini).
+- Dream Companies Criteria: Minimum CGPA of 8.0 for companies offering CTC >= 12 LPA (Microsoft, Amazon, Cisco, Oracle, Qualcomm).
+- Dress Code: Formal Western or Indian formal attire is mandatory during all interviews, PPT sessions, and GD rounds.
+
+NOTICE 3: HOSTEL REGULATIONS & CURFEW TIMINGS
+- Night Curfew: Boys and Girls hostel main gates will be locked at 09:30 PM sharp on weekdays and 10:00 PM on weekends.
+- Night Out / Late Pass: Must be applied at least 24 hours in advance through the Parent Approval Hostel App. Unauthorized absence invites a penalty of Rs. 1,000 and parent notification.
+- Mess Timings:
+  * Breakfast: 07:30 AM - 09:15 AM
+  * Lunch: 12:00 PM - 02:00 PM
+  * Evening Snacks: 05:00 PM - 06:15 PM
+  * Dinner: 07:30 PM - 09:30 PM
+- Prohibited Activities: Ragging, consumption of alcohol or smoking, loud music after 10:00 PM, and electrical heating appliances in rooms.
+
+NOTICE 4: CAMPUS WI-FI ACCESS & IT USAGE POLICY
+- SSID: "AIT-Campus-Student" (5 GHz / 2.4 GHz)
+- Authentication: Login with Student Roll Number and Portal Password.
+- Bandwidth Allocation: 50 Mbps per connected device.
+- Torrenting, peer-to-peer file sharing, cryptocurrency mining, and gambling/adult websites are strictly blocked by firewall.

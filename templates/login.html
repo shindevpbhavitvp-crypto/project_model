@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - Academic Assistant Portal{% endblock %}
+
+{% block content %}
+<div class="auth-page-container">
+    <div class="auth-grid">
+        <!-- Left Hero Branding -->
+        <div class="auth-hero-card">
+            <div class="hero-badge">Next-Gen College Intelligence</div>
+            <h1 class="hero-title">Academic Guidance Powered by <span class="gradient-text">Agentic RAG</span></h1>
+            <p class="hero-desc">
+                Access your personalized class timetable, live subject-wise attendance analytics, 
+                and official campus policies via an intelligent conversational assistant.
+            </p>
+
+            <div class="hero-feature-list">
+                <div class="hero-feature-item">
+                    <div class="feat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong>Isolated Class Timetables</strong>
+                        <p>Real-time lecture timings and classroom assignments for your specific semester.</p>
+                    </div>
+                </div>
+
+                <div class="hero-feature-item">
+                    <div class="feat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong>Real-time Attendance Guard</strong>
+                        <p>Subject percentage calculations with immediate shortage alerts below 75%.</p>
+                    </div>
+                </div>
+
+                <div class="hero-feature-item">
+                    <div class="feat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong>Local BM25 Document RAG</strong>
+                        <p>Instant answers cited directly from official examination rules, syllabus, & circulars.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-stats-row">
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Local & Private</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">&lt; 15ms</span>
+                    <span class="stat-label">Query Latency</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">BM25</span>
+                    <span class="stat-label">Vector-less RAG</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sign-In Form Card -->
+        <div class="auth-form-card">
+            <div class="form-header">
+                <h2 class="form-title">Portal Access</h2>
+                <p class="form-sub">Choose your role or tap any pre-configured demo account below.</p>
+            </div>
+
+            <!-- Role Selector Tabs -->
+            <div class="role-tabs" role="tablist">
+                <button type="button" class="tab-btn active" id="tab-student" onclick="selectRoleTab('student')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Student Login</span>
+                </button>
+                <button type="button" class="tab-btn" id="tab-admin" onclick="selectRoleTab('admin')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span>Faculty / Admin</span>
+                </button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form action="{{ url_for('login') }}" method="POST" class="auth-form" id="loginForm">
+                <input type="hidden" name="login_type" id="login_type" value="student">
+
+                <div class="form-group">
+                    <label for="identifier" id="label-identifier">Student ID</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </span>
+                        <input type="text" name="identifier" id="identifier" class="form-control" placeholder="e.g. STU001" required autofocus value="STU001">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-label-row">
+                        <label for="password">Password</label>
+                        <button type="button" class="link-btn" onclick="togglePasswordVisibility()">Show</button>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </span>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required value="student123">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="login-submit-btn">
+                    <span>Access Portal</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </form>
+
+            <!-- 1-Click Demo Quick Fill -->
+            <div class="demo-section">
+                <div class="demo-divider">
+                    <span>1-CLICK DEMO ACCOUNTS</span>
+                </div>
+
+                <div class="demo-cards-grid">
+                    <button type="button" class="demo-card student-demo" onclick="fillCredentials('student', 'STU001', 'student123')">
+                        <div class="demo-avatar bg-indigo">AS</div>
+                        <div class="demo-info">
+                            <strong>Aarav Sharma</strong>
+                            <span>STU001 &bull; B.Tech CSE (Sem 6)</span>
+                            <span class="status-chip success">89.3% Attendance</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="demo-card student-demo" onclick="fillCredentials('student', 'STU002', 'student123')">
+                        <div class="demo-avatar bg-cyan">PP</div>
+                        <div class="demo-info">
+                            <strong>Priya Patel</strong>
+                            <span>STU002 &bull; B.Tech IT (Sem 4)</span>
+                            <span class="status-chip success">93.3% Attendance</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="demo-card student-demo highlight-alert" onclick="fillCredentials('student', 'STU003', 'student123')">
+                        <div class="demo-avatar bg-rose">RV</div>
+                        <div class="demo-info">
+                            <strong>Rohan Verma</strong>
+                            <span>STU003 &bull; B.Tech CSE (Sem 6)</span>
+                            <span class="status-chip warning">Shortage Alert (65%)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="demo-card admin-demo" onclick="fillCredentials('admin', 'admin', 'admin123')">
+                        <div class="demo-avatar bg-amber">AD</div>
+                        <div class="demo-info">
+                            <strong>Prof. S. R. Deshmukh</strong>
+                            <span>admin &bull; Dean Academics</span>
+                            <span class="status-chip info">Admin & RAG Manager</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function selectRoleTab(role) {
+    const studentTab = document.getElementById('tab-student');
+    const adminTab = document.getElementById('tab-admin');
+    const loginType = document.getElementById('login_type');
+    const labelIdentifier = document.getElementById('label-identifier');
+    const identifierInput = document.getElementById('identifier');
+    const passwordInput = document.getElementById('password');
+
+    if (role === 'admin') {
+        studentTab.classList.remove('active');
+        adminTab.classList.add('active');
+        loginType.value = 'admin';
+        labelIdentifier.innerText = 'Admin Username';
+        identifierInput.placeholder = 'e.g. admin';
+        identifierInput.value = 'admin';
+        passwordInput.value = 'admin123';
+    } else {
+        adminTab.classList.remove('active');
+        studentTab.classList.add('active');
+        loginType.value = 'student';
+        labelIdentifier.innerText = 'Student ID';
+        identifierInput.placeholder = 'e.g. STU001';
+        identifierInput.value = 'STU001';
+        passwordInput.value = 'student123';
+    }
+}
+
+function fillCredentials(role, id, pwd) {
+    selectRoleTab(role);
+    document.getElementById('identifier').value = id;
+    document.getElementById('password').value = pwd;
+    
+    // Smooth flash effect
+    const btn = document.getElementById('login-submit-btn');
+    btn.classList.add('pulse');
+    setTimeout(() => btn.classList.remove('pulse'), 600);
+}
+
+function togglePasswordVisibility() {
+    const pwd = document.getElementById('password');
+    pwd.type = pwd.type === 'password' ? 'text' : 'password';
+}
+</script>
+{% endblock %}

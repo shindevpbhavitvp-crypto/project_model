@@ -1,0 +1,41 @@
+================================================================================
+APEX INSTITUTE OF TECHNOLOGY - DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+CURRICULUM & SYLLABUS: B.TECH (CSE) - SEMESTER 6 (THIRD YEAR)
+================================================================================
+
+COURSE 1: CS601 - MACHINE LEARNING
+- Credits: 4 (3 Lectures, 2 Practical hours)
+- Course Objectives: Master supervised and unsupervised learning algorithms, model evaluation, neural networks, and dimensionality reduction.
+- Unit 1: Introduction to Machine Learning, Feature Engineering, Train/Validation/Test splits, Bias-Variance Tradeoff.
+- Unit 2: Supervised Learning: Linear Regression, Logistic Regression, Decision Trees, Random Forests, Support Vector Machines (SVM).
+- Unit 3: Unsupervised Learning: K-Means Clustering, Hierarchical Clustering, Principal Component Analysis (PCA), t-SNE.
+- Unit 4: Neural Networks & Deep Learning Basics: Perceptron, Multi-Layer Perceptrons (MLP), Backpropagation, Activation Functions.
+- Evaluation: Mid-Term Exam (20%), Lab Practicals (20%), Assignments & Quizzes (10%), End-Term Exam (50%).
+- Textbooks: "Pattern Recognition and Machine Learning" by Christopher Bishop; "Hands-On Machine Learning" by Aurelien Geron.
+
+COURSE 2: CS602 - CLOUD COMPUTING & DISTRIBUTED SYSTEMS
+- Credits: 3 (3 Lectures)
+- Course Objectives: Understand virtualization, cloud service models (IaaS, PaaS, SaaS), distributed consensus, and microservices architecture.
+- Unit 1: Foundations of Distributed Systems, Clock Synchronization, Vector Clocks, Paxos and Raft consensus algorithms.
+- Unit 2: Virtualization Technologies: Hypervisors (Type 1 and Type 2), Containers (Docker), Container Orchestration (Kubernetes).
+- Unit 3: Cloud Architecture: Public, Private, Hybrid Clouds, AWS and Azure core services, Serverless computing (AWS Lambda).
+- Unit 4: Cloud Storage & Big Data: Object storage (S3), NoSQL databases, MapReduce paradigm, CAP Theorem.
+- Textbooks: "Distributed Systems: Principles and Paradigms" by Tanenbaum & Van Steen; "Cloud Computing: Concepts, Technology & Architecture" by Thomas Erl.
+
+COURSE 3: CS603 - CYBER SECURITY & CRYPTOGRAPHY
+- Credits: 4 (3 Lectures, 2 Practical hours)
+- Course Objectives: Study encryption standards, public-key infrastructure, network vulnerabilities, penetration testing, and digital forensics.
+- Unit 1: Classical Ciphers, Symmetric Key Cryptography (DES, AES), Block cipher modes of operation.
+- Unit 2: Asymmetric Cryptography: RSA, Diffie-Hellman Key Exchange, Elliptic Curve Cryptography (ECC), Digital Signatures, SHA-256/SHA-3.
+- Unit 3: Network Security: TLS/SSL protocols, Firewalls, Intrusion Detection Systems (IDS/IPS), VPNs.
+- Unit 4: Cyber Attacks & Defense: SQL Injection, Cross-Site Scripting (XSS), Buffer Overflow attacks, Zero-Trust Architecture.
+- Textbooks: "Cryptography and Network Security" by William Stallings.
+
+COURSE 4: CS604 - SOFTWARE ENGINEERING & DEVOPS
+- Credits: 3 (3 Lectures)
+- Course Objectives: Agile methodologies, CI/CD pipelines, test-driven development, code quality, and software maintenance.
+- Unit 1: Agile, Scrum, Kanban workflows, Sprint Planning, User Stories, Burn-down charts.
+- Unit 2: Software Design Patterns: Singleton, Factory, Observer, Strategy, MVC, microservices.
+- Unit 3: CI/CD Pipelines: Git branching strategies, GitHub Actions, Jenkins, automated testing (unit, integration, regression).
+- Unit 4: Software Quality Assurance, Static code analysis (SonarQube), code review protocols, observability and Prometheus monitoring.
+- Textbooks: "Software Engineering: A Practitioner's Approach" by Roger Pressman.

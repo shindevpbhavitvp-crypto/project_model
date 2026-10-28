@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant - Apex Institute{% endblock %}
+
+{% block content %}
+<div class="chat-layout">
+    <!-- Left Panel: Academic Profile & Quick Prompts -->
+    <aside class="chat-sidebar">
+        <!-- Student Identity Card -->
+        <div class="sidebar-card student-card">
+            <div class="student-card-header">
+                <div class="student-avatar">{{ current_user.name[:1] | upper }}</div>
+                <div class="student-meta">
+                    <h3 class="student-name">{{ current_user.name }}</h3>
+                    <span class="student-id-tag">{{ current_user.id }}</span>
+                </div>
+            </div>
+            <div class="student-card-details">
+                <div class="detail-row">
+                    <span class="detail-label">Program:</span>
+                    <span class="detail-val">{{ current_user.class_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Semester:</span>
+                    <span class="detail-val">Semester {{ current_user.semester }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">College Email:</span>
+                    <span class="detail-val email-text">{{ current_user.email }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Summary Widget -->
+        {% if attendance %}
+        <div class="sidebar-card attendance-card {% if attendance.overall_is_low %}status-alert{% endif %}">
+            <div class="sidebar-card-title">
+                <div class="title-with-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                    <span>Live Attendance</span>
+                </div>
+                {% if attendance.overall_is_low %}
+                    <span class="pill-badge badge-warning">Shortage Alert</span>
+                {% else %}
+                    <span class="pill-badge badge-success">Good Standing</span>
+                {% endif %}
+            </div>
+
+            <div class="attendance-metric-box">
+                <div class="metric-circle-gauge">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        />
+                        <path class="circle {% if attendance.overall_is_low %}warning{% else %}good{% endif %}"
+                            stroke-dasharray="{{ attendance.overall_percentage }}, 100"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        />
+                        <text x="18" y="20.35" class="percentage-text">{{ attendance.overall_percentage }}%</text>
+                    </svg>
+                </div>
+                <div class="metric-stats">
+                    <div class="stat-line">
+                        <span>Attended:</span>
+                        <strong>{{ attendance.overall_attended }} / {{ attendance.overall_total }}</strong>
+                    </div>
+                    <div class="stat-line">
+                        <span>Min Threshold:</span>
+                        <span>75.0%</span>
+                    </div>
+                    <div class="stat-line">
+                        <span>Shortage Subjects:</span>
+                        <strong class="{% if attendance.low_attendance_count > 0 %}text-danger{% endif %}">
+                            {{ attendance.low_attendance_count }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            {% if attendance.low_attendance_subjects %}
+            <div class="shortage-notice-box">
+                <div class="notice-head">⚠️ Defaulter Risk:</div>
+                <ul class="shortage-list">
+                    {% for sub in attendance.low_attendance_subjects %}
+                        <li><strong>{{ sub.subject }}</strong>: {{ sub.percentage }}% ({{ sub.attended }}/{{ sub.total }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <button type="button" class="view-drawer-btn" onclick="openDrawer('attendance')">
+                <span>View Full Attendance Breakdown</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+        {% endif %}
+
+        <!-- Quick AI Prompt Suggestions -->
+        <div class="sidebar-card prompts-card">
+            <div class="sidebar-card-title">
+                <div class="title-with-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Quick Inquiries</span>
+                </div>
+            </div>
+            <div class="prompt-chips">
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('What is my timetable for today?')">
+                    📅 Today's Timetable
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('Do I have any low attendance subjects or shortage?')">
+                    ⚠️ Check Attendance Shortage
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('What are the central library timings and book borrowing rules?')">
+                    📚 Central Library Rules
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('What are the campus placement eligibility criteria for 2026?')">
+                    💼 Campus Placement Criteria
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('What are the examination rules and passing criteria?')">
+                    📝 Exam Passing Regulations
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('Explain the Machine Learning course syllabus and lab work')">
+                    📖 Machine Learning Syllabus
+                </button>
+                <button type="button" class="prompt-chip" onclick="sendQuickPrompt('What are the hostel curfew timings and mess schedule?')">
+                    🏢 Hostel & Mess Rules
+                </button>
+            </div>
+        </div>
+
+        <!-- Indexed Knowledge Documents -->
+        <div class="sidebar-card docs-card">
+            <div class="sidebar-card-title">
+                <div class="title-with-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>RAG Knowledge Base ({{ documents | length }})</span>
+                </div>
+            </div>
+            <div class="doc-list-compact">
+                {% for doc in documents %}
+                <div class="doc-item-compact" onclick="sendQuickPrompt('Summarize key points from {{ doc.filename }}')">
+                    <span class="doc-badge">{{ doc.file_type }}</span>
+                    <span class="doc-title" title="{{ doc.original_name }}">{{ doc.original_name }}</span>
+                    <span class="doc-chunks">{{ doc.chunk_count }} chk</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Chat Workspace -->
+    <section class="chat-workspace">
+        <!-- Chat Header -->
+        <div class="workspace-header">
+            <div class="ai-status-indicator">
+                <div class="status-pulse-dot"></div>
+                <div class="ai-header-info">
+                    <h2>Apex AI Assistant</h2>
+                    <span class="ai-sub">Agentic Academic Router &bull; Local BM25 RAG Engine</span>
+                </div>
+            </div>
+            <div class="workspace-controls">
+                <button type="button" class="control-btn" id="tts-toggle-btn" onclick="toggleAudioReading()" title="Toggle voice narration">
+                    <svg id="tts-icon-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <span id="tts-label">Voice: OFF</span>
+                </button>
+
+                <button type="button" class="control-btn" onclick="openDrawer('timetable')" title="View timetable schedule">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>Schedule</span>
+                </button>
+
+                <button type="button" class="control-btn danger-hover" onclick="clearConversation()" title="Clear conversation history">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Clear</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Stream Messages Container -->
+        <div class="chat-messages-container" id="chatMessages">
+            <!-- Initial Greeting Message -->
+            <div class="chat-message assistant-message" id="welcome-msg">
+                <div class="message-avatar">
+                    <div class="bot-icon">AI</div>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="message-header">
+                        <span class="message-sender">Apex Assistant</span>
+                        <span class="message-time">Just now</span>
+                        <span class="source-tag system">Agentic Guide</span>
+                    </div>
+                    <div class="message-bubble">
+                        <p>Hello <strong>{{ current_user.name }}</strong>! I am your <strong>Smart College Assistant</strong> for <strong>{{ current_user.class_name }} (Semester {{ current_user.semester }})</strong>.</p>
+                        <p>I have direct access to your verified academic records and official college publications:</p>
+                        <ul>
+                            <li><strong>📅 Timetable Dispatcher:</strong> Ask for today's classes, tomorrow's schedule, or any day of the week.</li>
+                            <li><strong>📊 Attendance Guard:</strong> Check your overall standing, subject-wise percentages, or defaulter status.</li>
+                            <li><strong>📖 Document RAG Engine:</strong> Query official circulars, examination regulations, syllabus topics, and campus rules.</li>
+                        </ul>
+                        <p>How can I assist you right now?</p>
+                    </div>
+                    <div class="message-actions">
+                        <button type="button" class="msg-action-btn" onclick="readMessageAudio(this)" title="Read aloud">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                            <span>Speak</span>
+                        </button>
+                        <button type="button" class="msg-action-btn" onclick="copyMessageText(this)" title="Copy text">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="chatScrollAnchor" style="height: 1px; width: 100%; pointer-events: none; opacity: 0;"></div>
+        </div>
+
+        <!-- Chat Input Form & Voice Controls -->
+        <div class="chat-input-area">
+            <form id="chatForm" onsubmit="handleChatSubmit(event)" class="chat-form">
+                <div class="input-bar-container">
+                    <button type="button" class="voice-input-btn" id="voice-record-btn" onclick="toggleVoiceInput()" title="Voice input (Speech to Text)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                        <span class="voice-pulse-ring"></span>
+                    </button>
+
+                    <textarea 
+                        name="message" 
+                        id="userMessageInput" 
+                        rows="1" 
+                        placeholder="Ask about timetable, attendance, syllabus, exam rules, or campus circulars..." 
+                        required 
+                        onkeydown="handleTextareaKeydown(event)"
+                        oninput="autoResizeTextarea(this)"
+                    ></textarea>
+
+                    <button type="submit" class="send-message-btn" id="sendBtn" title="Send message">
+                        <span>Send</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <div class="input-helper-text">
+                Press <kbd>Enter</kbd> to submit &bull; <kbd>Shift + Enter</kbd> for line breaks &bull; Speech recognition available in modern browsers
+            </div>
+        </div>
+    </section>
+
+    <!-- Right Drawer: Schedule & Detailed Attendance -->
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+    <aside class="side-drawer" id="sideDrawer">
+        <div class="drawer-header">
+            <div class="drawer-tabs">
+                <button type="button" class="drawer-tab active" id="drawer-tab-timetable" onclick="switchDrawerTab('timetable')">
+                    📅 Schedule
+                </button>
+                <button type="button" class="drawer-tab" id="drawer-tab-attendance" onclick="switchDrawerTab('attendance')">
+                    📊 Attendance
+                </button>
+            </div>
+            <button type="button" class="drawer-close-btn" onclick="closeDrawer()" aria-label="Close drawer">&times;</button>
+        </div>
+
+        <div class="drawer-body">
+            <!-- Timetable Section -->
+            <div class="drawer-tab-pane active" id="pane-timetable">
+                <div class="pane-headline">
+                    <h4>{{ current_user.class_name }} &bull; Semester {{ current_user.semester }}</h4>
+                    <p>Weekly classroom and laboratory timetable</p>
+                </div>
+
+                {% if timetable and timetable.timetable_by_day %}
+                    {% for day, slots in timetable.timetable_by_day.items() %}
+                        <div class="day-schedule-card">
+                            <div class="day-title-badge">{{ day }}</div>
+                            <div class="day-slots-list">
+                                {% for slot in slots %}
+                                    <div class="slot-item">
+                                        <div class="slot-time">{{ slot.time }}</div>
+                                        <div class="slot-info">
+                                            <strong class="slot-subject">{{ slot.subject }}</strong>
+                                            <div class="slot-meta">
+                                                <span>🏛️ {{ slot.room }}</span> &bull; 
+                                                <span>👨‍🏫 {{ slot.faculty }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-state">No timetable records found.</p>
+                {% endif %}
+            </div>
+
+            <!-- Attendance Section -->
+            <div class="drawer-tab-pane" id="pane-attendance">
+                {% if attendance and attendance.records %}
+                    <div class="pane-headline">
+                        <h4>Subject-wise Attendance Breakdown</h4>
+                        <p>Mandatory minimum attendance: <strong>75.0%</strong></p>
+                    </div>
+
+                    <div class="attendance-detailed-list">
+                        {% for r in attendance.records %}
+                            <div class="subject-att-card {% if r.is_low %}shortage-flag{% endif %}">
+                                <div class="subject-att-head">
+                                    <span class="subj-name">{{ r.subject }}</span>
+                                    <span class="subj-pct {% if r.is_low %}text-danger{% else %}text-success{% endif %}">
+                                        {{ r.percentage }}%
+                                    </span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill {% if r.is_low %}bg-danger{% else %}bg-success{% endif %}" style="width: {{ r.percentage }}%;"></div>
+                                </div>
+                                <div class="subject-att-foot">
+                                    <span>{{ r.attended }} attended of {{ r.total }} lectures</span>
+                                    <span class="status-pill {% if r.is_low %}pill-danger{% else %}pill-success{% endif %}">
+                                        {{ r.status }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-state">No attendance records found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}
